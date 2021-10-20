@@ -9,6 +9,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import com.udacity.project4.R
+import com.udacity.project4.databinding.ActivityRemindersBinding
+
 //import kotlinx.android.synthetic.main.activity_reminders.*
 
 /**
@@ -16,17 +18,18 @@ import com.udacity.project4.R
  */
 class RemindersActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityRemindersBinding
 
-            override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_reminders)
+        binding = ActivityRemindersBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                (nav_host_fragm as NavHostFragment).navController.popBackStack()
+                (binding.navHostFragment as NavHostFragment).navController.popBackStack()
                 return true
             }
         }
