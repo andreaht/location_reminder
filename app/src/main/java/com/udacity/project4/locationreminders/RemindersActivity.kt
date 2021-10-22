@@ -21,8 +21,6 @@ class RemindersActivity : AppCompatActivity() {
         const val TAG = "RemindersActivity"
         const val SIGN_IN_REQUEST_CODE = 1001
         const val SIGN_OUT_REQUEST_CODE = 1002
-        const val RESULT_OK = 1
-        const val RESULT_NOT_OK = 0
     }
 
     private lateinit var binding: ActivityRemindersBinding
@@ -52,24 +50,7 @@ class RemindersActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-/*
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SIGN_IN_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Log.i(TAG, "Sign in successful")
 
-            } else {
-                Log.i(TAG, "Sign in unsuccessful")
-
-                //launch login activity
-                val intent = Intent(this,AuthenticationActivity::class.java)
-                    .putExtra("requestCode", SIGN_IN_REQUEST_CODE)
-                startActivityForResult(intent, SIGN_IN_REQUEST_CODE)
-            }
-        }
-    }
-*/
     /**
      * Observes the authentication state and changes the UI accordingly.
      * If there is a logged in user: (1) show a logout button and (2) display their name.
