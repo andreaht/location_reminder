@@ -3,7 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/PASETTI/AndroidStudioProjects/udacity.p4/nd940-android-kotlin-c4-starter-master/app/src/main/res/layout/fragment_reminders.xml" value="0.11666666666666667" />
+        <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.43667679837892603" />
+        <entry key="app/src/main/res/layout/fragment_reminders.xml" value="0.2730496453900709" />
       </map>
     </option>
   </component>

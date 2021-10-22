@@ -1,12 +1,15 @@
 package com.udacity.project4.locationreminders.reminderslist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import com.udacity.project4.R
+import com.udacity.project4.authentication.AuthenticationActivity
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentRemindersBinding
+import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import com.udacity.project4.utils.setTitle
 import com.udacity.project4.utils.setup
@@ -71,7 +74,10 @@ class ReminderListFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.logout -> {
-//                TODO: add the logout implementation
+                // add the logout implementation
+                val intent = Intent(context,AuthenticationActivity::class.java)
+                    .putExtra("requestCode", RemindersActivity.SIGN_OUT_REQUEST_CODE)
+                startActivityForResult(intent, RemindersActivity.SIGN_IN_REQUEST_CODE)
             }
         }
         return super.onOptionsItemSelected(item)
