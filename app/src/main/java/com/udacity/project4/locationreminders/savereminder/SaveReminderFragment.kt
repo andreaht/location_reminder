@@ -60,11 +60,11 @@ class SaveReminderFragment : BaseFragment() {
             val latitude = _viewModel.latitude.value
             val longitude = _viewModel.longitude.value
 
-//             1) add a geofencing request
+            //1) add a geofencing request
             val reminderDataItem = ReminderDataItem(
                 title, description, location, latitude, longitude)
             addGeofence(reminderDataItem)
-//             2) save the reminder to the local db
+            //2) save the reminder to the local db
             _viewModel.validateAndSaveReminder(reminderDataItem)
         }
 
@@ -86,11 +86,8 @@ class SaveReminderFragment : BaseFragment() {
         PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    /*
- * Adds a Geofence for the current clue if needed, and removes any existing Geofence. This
- * method should be called after the user has granted the location permission.  If there are
- * no more geofences, we remove the geofence and let the viewmodel know that the ending hint
- * is now "active."
+ /**
+ * Adds a Geofence.This method should be called after the user has granted the location permission.
  */
     @SuppressLint("MissingPermission")
     private fun addGeofence(rdi : ReminderDataItem) {
@@ -143,7 +140,7 @@ class SaveReminderFragment : BaseFragment() {
         private const val TAG = "SaveReminderFragment"
         const val GEOFENCE_RADIUS_IN_METERS = 100f
         private val GEOFENCE_EXPIRATION_IN_MILLISECONDS: Long = TimeUnit.HOURS.toMillis(1)
-        private const val ACTION_GEOFENCE_EVENT =
+        const val ACTION_GEOFENCE_EVENT =
             "com.udacity.project4.reminder.action.ACTION_GEOFENCE_EVENT"
     }
 }
