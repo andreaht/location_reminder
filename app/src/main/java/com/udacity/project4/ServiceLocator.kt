@@ -3,9 +3,9 @@ package com.udacity.project4
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
+import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.local.RemindersDatabase
 import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
 
@@ -18,30 +18,26 @@ object ServiceLocator {
     private val lock = Any()
     private var database: RemindersDatabase? = null
     @Volatile
-    var RemindersDatabase: RemindersDatabase? = null
+    var remindersDataSource: ReminderDataSource? = null
         @VisibleForTesting set
 
-    fun provideRemindersRepository(context: Context): RemindersLocalRepository {
+    fun provideReminderDataSource(context: Context): ReminderDataSource {
         synchronized(this) {
-            return RemindersDatabase ?: createRemindersDatabase(context)
+            return remindersDataSource ?: createRemindersRepository(context)
         }
     }
 
-    private fun createRemindersDatabase(context: Context): RemindersDatabase {
-        val newRepo = RemindersLocalRepository(database.reminderDao(), Dispatchers.Main)
-        RemindersDatabase = newRepo
+    private fun createRemindersRepository(context: Context): ReminderDataSource {
+        val database = database ?: createDataBase(context)
+        val newRepo = RemindersLocalRepository(database.reminderDao())
+        remindersDataSource = newRepo
         return newRepo
     }
 
-    private fun createTaskLocalDataSource(context: Context): TasksDataSource {
-        val database = database ?: createDataBase(context)
-        return TasksLocalDataSource(database.taskDao())
-    }
-
-    private fun createDataBase(context: Context): ToDoDatabase {
+    private fun createDataBase(context: Context): RemindersDatabase {
         val result = Room.databaseBuilder(
             context.applicationContext,
-            ToDoDatabase::class.java, "Tasks.db"
+            RemindersDatabase::class.java, "Reminders.db"
         ).build()
         database = result
         return result
@@ -51,7 +47,7 @@ object ServiceLocator {
     fun resetRepository() {
         synchronized(lock) {
             runBlocking {
-                TasksRemoteDataSource.deleteAllTasks()
+                remindersDataSource?.deleteAllReminders()
             }
             // Clear all data to avoid test pollution.
             database?.apply {
@@ -59,7 +55,7 @@ object ServiceLocator {
                 close()
             }
             database = null
-            RemindersDatabase = null
+            remindersDataSource = null
         }
     }
 }
