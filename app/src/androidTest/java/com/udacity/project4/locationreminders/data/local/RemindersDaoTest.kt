@@ -18,6 +18,7 @@ import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Test
+import java.util.*
 import kotlin.random.Random.Default.nextDouble
 
 @ExperimentalCoroutinesApi
@@ -47,12 +48,12 @@ class RemindersDaoTest {
 
     @Test
     fun insertReminderAndGetById() = runBlockingTest {
-        // GIVEN - insert a task
+        // GIVEN - insert a reminder
         val reminder = ReminderDTO("title", "description", "location",
             nextDouble(-90.0,90.0),nextDouble(-180.0,180.0))
         database.reminderDao().saveReminder(reminder)
 
-        // WHEN - Get the task by id from the database
+        // WHEN - Get the reminder by id from the database
         val loaded = database.reminderDao().getReminderById(reminder.id)
 
         // THEN - The loaded data contains the expected values
@@ -67,12 +68,12 @@ class RemindersDaoTest {
 
     @Test
     fun updateReminderAndGetById() = runBlockingTest {
-        // When inserting a task
+        // When inserting a reminder
         val originalReminder = ReminderDTO("title", "description", "location",
             nextDouble(-90.0,90.0),nextDouble(-180.0,180.0))
         database.reminderDao().saveReminder(originalReminder)
 
-        // When the task is updated
+        // When the reminder is updated
         val updatedReminder = ReminderDTO("new title", "new description", "new location",
             nextDouble(-90.0,90.0),nextDouble(-180.0,180.0), originalReminder.id)
         database.reminderDao().saveReminder(updatedReminder)

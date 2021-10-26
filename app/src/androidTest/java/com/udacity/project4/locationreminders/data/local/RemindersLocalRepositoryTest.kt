@@ -11,10 +11,13 @@ import com.udacity.project4.locationreminders.data.dto.succeeded
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.TestCoroutineScope
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert
 import org.junit.*
 import org.junit.runner.RunWith
+import java.util.*
 import kotlin.random.Random
 
 @ExperimentalCoroutinesApi
@@ -108,6 +111,15 @@ class RemindersLocalRepositoryTest {
         Assert.assertThat(result2.succeeded, `is`(true))
         result2 as Result.Success
         MatcherAssert.assertThat(result2.data, `is`(emptyList()))
+    }
+
+    @Test
+    fun loadReminderWhenAreUnavailable() = runBlocking {
+        // When loading a not-existent reminder
+        val loaded = localRepository.getReminder(UUID.randomUUID().toString())
+
+        // THEN - The loaded data contains the expected values
+        Assert.assertThat(loaded.succeeded, `is`(false))
     }
 
 }
