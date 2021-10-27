@@ -47,6 +47,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private val runningQOrLater =
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var snackbar : Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -108,10 +109,15 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         else -> super.onOptionsItemSelected(item)
     }
 
+    override fun onPause() {
+        super.onPause()
+        snackbar?.dismiss()
+    }
+
     /*
-     *  Determines whether the app has the appropriate permissions across Android 10+ and all other
-     *  Android versions.
-     */
+         *  Determines whether the app has the appropriate permissions across Android 10+ and all other
+         *  Android versions.
+         */
     @TargetApi(29)
     private fun foregroundAndBackgroundLocationPermissionApproved(): Boolean {
         val foregroundLocationApproved = (
@@ -175,18 +181,18 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
                     PackageManager.PERMISSION_DENIED))
         {
             // Permission denied.
-            Snackbar.make(
+            snackbar = Snackbar.make(
                 binding.root,
                 R.string.permission_denied_explanation, Snackbar.LENGTH_INDEFINITE
             )
-                .setAction(R.string.settings) {
+            snackbar?.setAction(R.string.settings) {
                     // Displays App settings screen.
                     startActivity(Intent().apply {
                         action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                         data = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     })
-                }.show()
+                }?.show()
         } else {
             map?.isMyLocationEnabled = true
             requestNewLocationData()

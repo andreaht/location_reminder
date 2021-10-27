@@ -23,11 +23,9 @@ class ReminderListFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding =
-            DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_reminders, container, false
-            )
+        binding = FragmentRemindersBinding.inflate(
+            inflater, container, false
+        )
         binding.viewModel = _viewModel
 
         setHasOptionsMenu(true)

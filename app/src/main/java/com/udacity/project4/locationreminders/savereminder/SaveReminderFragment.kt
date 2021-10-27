@@ -52,22 +52,23 @@ class SaveReminderFragment : BaseFragment() {
             _viewModel.navigationCommand.value =
                 NavigationCommand.To(SaveReminderFragmentDirections.actionSaveReminderFragmentToSelectLocationFragment())
         }
+        with(_viewModel) {
+            binding.saveReminder.setOnClickListener {
+                val title = reminderTitle.value
+                val description = reminderDescription.value
+                val location = reminderSelectedLocationStr.value
+                val latitude = latitude.value
+                val longitude = longitude.value
 
-        binding.saveReminder.setOnClickListener {
-            val title = _viewModel.reminderTitle.value
-            val description = _viewModel.reminderDescription.value
-            val location = _viewModel.reminderSelectedLocationStr.value
-            val latitude = _viewModel.latitude.value
-            val longitude = _viewModel.longitude.value
-
-            //1) add a geofencing request
-            val reminderDataItem = ReminderDataItem(
-                title, description, location, latitude, longitude)
-            addGeofence(reminderDataItem)
-            //2) save the reminder to the local db
-            _viewModel.validateAndSaveReminder(reminderDataItem)
+                //1) add a geofencing request
+                val reminderDataItem = ReminderDataItem(
+                    title, description, location, latitude, longitude
+                )
+                addGeofence(reminderDataItem)
+                //2) save the reminder to the local db
+                validateAndSaveReminder(reminderDataItem)
+            }
         }
-
         geofencingClient = LocationServices.getGeofencingClient(requireContext())
     }
 
