@@ -4,13 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.udacity.project4.R
+import com.udacity.project4.ServiceLocator
 import com.udacity.project4.databinding.ActivityAuthenticationBinding
 import com.udacity.project4.locationreminders.RemindersActivity
+import kotlinx.coroutines.runBlocking
 
 /**
  * This class should be the starting point of the app, It asks the users to sign in / register, and redirects the
@@ -37,6 +40,11 @@ class AuthenticationActivity : AppCompatActivity() {
         if(requestCode == RemindersActivity.SIGN_OUT_REQUEST_CODE) {
             AuthUI.getInstance().signOut(this)
         }
+
+        //enables authomatic sign in if user is already signed in
+        if(FirebaseAuth.getInstance().currentUser != null)
+            launchSignInFlow()
+
     }
 
 
@@ -88,5 +96,4 @@ class AuthenticationActivity : AppCompatActivity() {
    override fun onBackPressed() {
         finishAffinity()
     }
-
 }
